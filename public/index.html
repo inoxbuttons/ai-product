@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-помощник: карточки товаров КИП</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div>
+    <h1>Карточка товара КИП</h1>
+    <p class="subtitle">Черновик SEO-карточки по данным прибора. Значения характеристик берутся только из входных данных.</p>
+  </div>
+  <div id="status" class="status status--loading" title="">Проверка подключения…</div>
+</header>
+
+<main class="layout">
+  <!-- ВХОД -->
+  <section class="panel">
+    <div class="panel__head">
+      <h2>Данные товара</h2>
+      <div class="tabs" role="tablist">
+        <button class="tab is-active" data-tab="json" role="tab">JSON</button>
+        <button class="tab" data-tab="form" role="tab">Форма</button>
+      </div>
+    </div>
+
+    <div class="examples">
+      <span class="muted">Примеры:</span>
+      <button class="chip" data-example="product-1-manometer">Манометр</button>
+      <button class="chip" data-example="product-2-transmitter">Датчик (другая структура)</button>
+      <button class="chip" data-example="product-3-incomplete">Неполные данные</button>
+    </div>
+
+    <div id="tab-json" class="tabpane">
+      <textarea id="json" class="code" spellcheck="false" placeholder='{
+  "name": "Манометр показывающий DM 02",
+  "manufacturer": "Манотомь",
+  "specs": { "диапазон измерений": "0–1,6 МПа" },
+  "description": "Прибор предназначен для..."
+}'></textarea>
+      <div class="json-bar">
+        <span id="json-state" class="json-state"></span>
+        <span class="spacer"></span>
+        <button class="btn btn--ghost btn--sm" id="btn-format">Форматировать</button>
+        <button class="btn btn--ghost btn--sm" id="btn-clear">Очистить</button>
+      </div>
+      <p class="hint">Структура может быть любой: поддерживаются <code>name/title/название</code>, <code>manufacturer/brand/производитель</code>, характеристики объектом или массивом, дополнительные поля тоже учитываются.</p>
+    </div>
+
+    <div id="tab-form" class="tabpane" hidden>
+      <p id="form-note" class="note" hidden></p>
+      <label class="field">Название <span class="req">*</span>
+        <input id="f-name" type="text" placeholder="Манометр показывающий DM 02">
+      </label>
+      <label class="field">Производитель
+        <input id="f-manufacturer" type="text" placeholder="Манотомь">
+      </label>
+      <div class="field">
+        <span>Характеристики</span>
+        <div id="f-specs" class="specs"></div>
+        <button class="btn btn--ghost btn--sm" id="btn-add-spec" type="button">+ Характеристика</button>
+      </div>
+      <label class="field">Описание / фрагмент паспорта
+        <textarea id="f-description" rows="6" placeholder="Прибор предназначен для измерения…"></textarea>
+      </label>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn--primary" id="btn-generate">Сгенерировать карточку</button>
+      <span class="muted kbd-hint">или <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Enter</kbd></span>
+    </div>
+  </section>
+
+  <!-- РЕЗУЛЬТАТ -->
+  <section class="panel" id="result-panel">
+    <div class="panel__head">
+      <h2>Результат</h2>
+      <div id="copy-all" class="copy-all" hidden>
+        <span class="muted">Копировать всё:</span>
+        <button class="btn btn--sm" data-copy-all="markdown">Markdown</button>
+        <button class="btn btn--sm" data-copy-all="text">Текст</button>
+        <button class="btn btn--sm" data-copy-all="json">JSON</button>
+        <button class="btn btn--ghost btn--sm" id="btn-download" title="Скачать Markdown-файл">⬇ .md</button>
+      </div>
+    </div>
+
+    <div id="result">
+      <div class="empty">
+        <div class="empty__icon">📋</div>
+        <p>Вставьте JSON товара или заполните форму и нажмите «Сгенерировать карточку».</p>
+        <p class="muted">Каждый блок результата можно скопировать отдельной кнопкой.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>
